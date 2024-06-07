@@ -11,15 +11,16 @@ export class AppWindow {
     this.mainWindow = new OWWindow('background');
     this.currWindow = new OWWindow(windowName);
 
-    const closeButton = document.getElementById('closeButton');
-    const maximizeButton = document.getElementById('maximizeButton');
-    const minimizeButton = document.getElementById('minimizeButton');
+    const closeButton = $('#closeButton')[0];
+    const maximizeButton = $('#maximizeButton')[0];
+    const minimizeButton = $('#minimizeButton')[0];
 
-    const header = document.getElementById('header');
+    const header = $('#header')[0];
 
     this.setDrag(header);
 
     closeButton.addEventListener('click', () => {
+      console.log('close button clicked');
       this.mainWindow.close();
     });
 

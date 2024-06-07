@@ -1,7 +1,26 @@
 import { AppWindow } from "../AppWindow";
 import { kWindowNames } from "../consts";
+import { ApiBehavior } from "../api/ApiBehavior";
 
-// The desktop window is the window displayed while game is not running.
-// In our case, our desktop window has no logic - it only displays static data.
-// Therefore, only the generic AppWindow class is called.
-new AppWindow(kWindowNames.desktop);
+// A class for the desktop window.
+export class DesktopWindow extends AppWindow {
+    constructor() {
+        super(kWindowNames.desktop);
+        alert('DesktopWindow constructor');
+        this.getAPIBehavior();
+    }
+
+    public async getWindowState() {
+        return await this.currWindow.getWindowState();
+    }
+
+    public async getAPIBehavior() {
+        let promise = ApiBehavior.get("/characters");
+        promise.then((response) => {
+            console.log(response);
+        }, (error) => {
+            console.error(error);
+        }
+        );
+    }
+}
