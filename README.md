@@ -1,4 +1,4 @@
-# Open World Lego
+# The Entity's Eye
 
 ## Description
 Dead by Daylight is a popular multiplayer horror game. The proposed companion app aims to enhance the player experience by providing valuable in-game information and recommendations.
