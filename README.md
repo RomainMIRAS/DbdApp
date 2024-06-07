@@ -1,37 +1,61 @@
-# Overwolf sample app
+# Open World Lego
 
-This repository contains sample apps that demonstrate some basic points and flows that are relevant when developing Overwolf apps:
+## Description
+Dead by Daylight is a popular multiplayer horror game. The proposed companion app aims to enhance the player experience by providing valuable in-game information and recommendations.
 
-- The apps will launch automatically when a supported starts
-- Register to the overwolf.games.events API in order to receive real time events from the game.
-- Define a custom hotkey to be used in-game
-- Communication between the app windows according to our best practices
+## Concept
+- Provide access to match history for players.
+- Enable in-game build imports with recommended builds.
+- Display rankings of perks for easy reference. ( In second place if needed )
 
-## Sample app versions
 
-This repository contains two variants of the sample app:
+## Documentations
 
-* native - pure js version without any external js framework.
-* ts - typeScript version of the app, that uses external packages,etc.
+The documentation and the specification about the project can be found at the following link :
 
-In the future we will add more variants like React, Vue, etc.
+- [Documentatation and specification](https://docs.google.com/document/d/1pPUCyc_JfwYzJ2Bm7Ex-iM70dYkMCbuGdER47RNrFRI/edit?usp=sharing)
+  
+## Diagram of branches
+```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'gitGraph': {'showBranches': true}} }%%
+gitGraph
+   commit id:"c0"
+   commit id:"c1"
+   branch dev
+   checkout dev
+   commit id:"c2"
+   branch featureName
+   commit tag:"Adding a new feature" id:"c3"
+   checkout dev
+   branch dev_backup
+   checkout featureName
+   commit id:"c4"
+   checkout dev
+   merge featureName tag:"Merge request required"
+   checkout main
+   merge dev tag:"version 1"
+   checkout dev
+   commit id:"c5"
+   branch bugBugName
+   commit tag:"Fixing bug" id:"c6"
+   commit id:"c7"
+   checkout dev
+   merge bugBugName tag:"Merge request required"
+   commit id:"c8"
+   checkout dev_backup
+   merge dev
+   checkout main
+   merge dev tag:"version 2"
+   commit id:"c9"
+   
+```
+## Support
+- Techninal Project : https://docs.google.com/document/d/1pPUCyc_JfwYzJ2Bm7Ex-iM70dYkMCbuGdER47RNrFRI/edit?usp=sharing
 
-## How to load the app
+## Contact
+- Project manager : romain.miras@gmail.com
+- Git manager : romain.miras@gmail.com
 
-### Download from the store
-
-It's highly recommended to follow the build steps for setting up the sample app, including downloading the source code and building it manually.
-For those who need it, we can provide a pre-built and pre-packaged version. Contact us at developers@overwolf.com for more details.
-
-### Load as unpacked extension.
-
-You can load the native version of the sample app "as is", without any build process. Just download the repo and under Overwolf's settings, choose Support tab and then Development options. Click the Load unpacked button and choose the relevant folder of the native folder from the repository you just downloaded.
-
-* In order to load an app as "unpacked", you'll first have to be whitelisted as an Overwolf dev. More details on how to be whitelisted can be found [here](https://overwolf.github.io/docs/start/sdk-introduction#whitelist-as-a-developer)
-* To load the typescript version, first you should build it. More details on the readme page under the "ts" folder in this repo.
-
-## Notes
-
-Editing the author or app name in the manifest will prevent loading the app as unpacked app.
-
-For any further information or questions, contact developers@overwolf.com
+## Authors
+- Romain MIRAS @RomainMIRAS
+- InspecteurCF @InspecteurCF
