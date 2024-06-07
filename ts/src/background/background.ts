@@ -4,7 +4,7 @@ import {
   OWWindow
 } from '@overwolf/overwolf-api-ts';
 
-import { kWindowNames, kGameClassIds } from "../consts";
+import { kWindowNames } from "../consts";
 
 import RunningGameInfo = overwolf.games.RunningGameInfo;
 import AppLaunchTriggeredEvent = overwolf.extensions.AppLaunchTriggeredEvent;
@@ -74,7 +74,7 @@ class BackgroundController {
   }
 
   private toggleWindows(info: RunningGameInfo) {
-    if (!info || !this.isSupportedGame(info)) {
+    if (!info || !this.isDeadByDaylight(info)) {
       return;
     }
 
@@ -90,12 +90,12 @@ class BackgroundController {
   private async isSupportedGameRunning(): Promise<boolean> {
     const info = await OWGames.getRunningGameInfo();
 
-    return info && info.isRunning && this.isSupportedGame(info);
+    return info && info.isRunning && this.isDeadByDaylight(info);
   }
 
-  // Identify whether the RunningGameInfo object we have references a supported game
-  private isSupportedGame(info: RunningGameInfo) {
-    return kGameClassIds.includes(info.classId);
+  // Identify whether the RunningGameInfo object is Dead by Daylight ( 108684 or 108681 )
+  private isDeadByDaylight(info: RunningGameInfo) {
+    return info && (info.id === 108684 || info.id === 108681);
   }
 }
 
