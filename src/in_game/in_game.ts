@@ -9,7 +9,7 @@ import WindowState = overwolf.windows.WindowStateEx;
 // The in-game window is the window displayed while a supported game is running.
 // In our case, our in-game window has no logic - it only displays static data.
 // Therefore, only the generic AppWindow class is called.
-class InGame extends AppWindow {
+export class InGame extends AppWindow {
   private _hotkeys: OWHotkeys;
   private static _instance: InGame;
 

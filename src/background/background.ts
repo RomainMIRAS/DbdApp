@@ -8,6 +8,10 @@ import { kWindowNames } from "../consts";
 
 import RunningGameInfo = overwolf.games.RunningGameInfo;
 import AppLaunchTriggeredEvent = overwolf.extensions.AppLaunchTriggeredEvent;
+import { AppWindow } from '../AppWindow';
+import { DesktopWindow } from '../desktop/desktop';
+import { InGame } from '../in_game/in_game';
+
 
 // The background controller holds all of the app's background logic - hence its name. it has
 // many possible use cases, for example sharing data between windows, or, in our case,
@@ -15,15 +19,16 @@ import AppLaunchTriggeredEvent = overwolf.extensions.AppLaunchTriggeredEvent;
 // of the windows available in the app.
 // Our background controller implements the Singleton design pattern, since only one
 // instance of it should exist.
-class BackgroundController {
+export class BackgroundController {
   private static _instance: BackgroundController;
-  private _windows: Record<string, OWWindow> = {};
+  private _windows: Record<string, AppWindow> = {};
   private _gameListener: OWGameListener;
 
   private constructor() {
+    console.log('BackgroundController constructor');  
     // Populating the background controller's window dictionary
-    this._windows[kWindowNames.desktop] = new OWWindow(kWindowNames.desktop);
-    this._windows[kWindowNames.inGame] = new OWWindow(kWindowNames.inGame);
+    this._windows[kWindowNames.DesktopWindow] = DesktopWindow.instance();
+    this._windows[kWindowNames.inGame] = InGame.instance();
 
     // When a a supported game game is started or is ended, toggle the app's windows
     this._gameListener = new OWGameListener({
@@ -52,7 +57,7 @@ class BackgroundController {
 
     const currWindowName = (await this.isSupportedGameRunning())
       ? kWindowNames.inGame
-      : kWindowNames.desktop;
+      : kWindowNames.DesktopWindow;
 
     this._windows[currWindowName].restore();
   }
@@ -65,11 +70,11 @@ class BackgroundController {
     }
 
     if (await this.isSupportedGameRunning()) {
-      this._windows[kWindowNames.desktop].close();
+      this._windows[kWindowNames.DesktopWindow].closeWindow();
       this._windows[kWindowNames.inGame].restore();
     } else {
-      this._windows[kWindowNames.desktop].restore();
-      this._windows[kWindowNames.inGame].close();
+      this._windows[kWindowNames.DesktopWindow].restore();
+      this._windows[kWindowNames.inGame].closeWindow();
     }
   }
 
@@ -79,11 +84,11 @@ class BackgroundController {
     }
 
     if (info.isRunning) {
-      this._windows[kWindowNames.desktop].close();
+      this._windows[kWindowNames.DesktopWindow].closeWindow();
       this._windows[kWindowNames.inGame].restore();
     } else {
-      this._windows[kWindowNames.desktop].restore();
-      this._windows[kWindowNames.inGame].close();
+      this._windows[kWindowNames.DesktopWindow].restore();
+      this._windows[kWindowNames.inGame].closeWindow();
     }
   }
 

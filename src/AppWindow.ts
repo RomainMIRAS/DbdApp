@@ -1,4 +1,5 @@
 import { OWWindow } from "@overwolf/overwolf-api-ts";
+import $ from "jquery";
 
 // A base class for the app's foreground windows.
 // Sets the modal and drag behaviors, which are shared accross the desktop and in-game windows.
@@ -11,24 +12,17 @@ export class AppWindow {
     this.mainWindow = new OWWindow('background');
     this.currWindow = new OWWindow(windowName);
 
-    const closeButton = $('#closeButton')[0];
-    const maximizeButton = $('#maximizeButton')[0];
-    const minimizeButton = $('#minimizeButton')[0];
-
-    const header = $('#header')[0];
-
-    this.setDrag(header);
-
-    closeButton.addEventListener('click', () => {
-      console.log('close button clicked');
-      this.mainWindow.close();
+    this.setDrag($('#header')[0]);
+    
+    $('#closeButton').on('click', () => {
+      this.mainWindow.close();    
     });
 
-    minimizeButton.addEventListener('click', () => {
-      this.currWindow.minimize();
-    });
+    $('#minimizeButton').on('click', () => {
+      this.mainWindow.minimize();
+      });
 
-    maximizeButton.addEventListener('click', () => {
+    $('#maximizeButton').on('click', () => {
       if (!this.maximized) {
         this.currWindow.maximize();
       } else {
@@ -37,13 +31,30 @@ export class AppWindow {
 
       this.maximized = !this.maximized;
     });
+
+  }
+
+  public closeWindow() {
+    this.mainWindow.close();
+  }
+
+  public async restore() {
+    await this.currWindow.restore();
+  }
+
+  public async minimize() {
+    await this.currWindow.minimize();
+  }
+
+  public async maximize() {
+    await this.currWindow.maximize();
   }
 
   public async getWindowState() {
     return await this.currWindow.getWindowState();
   }
 
-  private async setDrag(elem) {
+  private async setDrag(elem: HTMLElement) {
     this.currWindow.dragMove(elem);
   }
 }

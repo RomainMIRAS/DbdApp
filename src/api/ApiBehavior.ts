@@ -1,5 +1,12 @@
 const baseURL = 'https://dbd.tricky.lol/api';
 
+//Enum with all the possible use of endpoints
+export enum Endpoints {
+    characters = "/characters",
+    episodes = "/episodes",
+    locations = "/locations"
+}
+
 // use overwolf.web.sendHttpRequest
 export const ApiBehavior = {
     get: async (path: string) => {

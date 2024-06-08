@@ -1,6 +1,8 @@
+import { DesktopWindow } from "./desktop/desktop";
+
 export const kWindowNames = {
   inGame: 'in_game',
-  desktop: 'desktop'
+  DesktopWindow: 'desktop'
 };
 
 export const kHotkeys = {

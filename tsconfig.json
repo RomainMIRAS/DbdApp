@@ -1,21 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "ES2022",
     "module": "none",
     "sourceMap": true,
     "outDir": "./dist",
     "moduleResolution": "node",
     "removeComments": true,
+    "esModuleInterop": true,
     "strict": true,
     "noImplicitAny": false,
     "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
     "types": [
       "@overwolf/types",
-      "jquery"
+      "@types/jquery"
     ],
     "rootDirs": [
       "./src"
-    ],
+    ]
   },
   "exclude": [
     "node_modules"
