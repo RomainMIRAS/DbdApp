@@ -1,0 +1,16 @@
+
+import { Character } from './Character';
+
+export class Perk {
+    icon: string;
+    nom: string;
+    description: string;
+    personnage: Character;
+
+    constructor(icon: string, nom: string, description: string, personnage: Character) {
+        this.icon = icon;
+        this.nom = nom;
+        this.description = description;
+        this.personnage = personnage;
+    }
+}

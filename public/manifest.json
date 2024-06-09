@@ -15,7 +15,8 @@
   },
   "permissions": [
     "Hotkeys",
-    "GameInfo"
+    "GameInfo",
+    "Web"
   ],
   "data": {
     "start_window": "background",
@@ -35,7 +36,8 @@
         "https://*.overwolf.com",
         "https://*.google-analytics.com",
         "http://*.google-analytics.com",
-        "https://www.googleapis.com"
+        "https://www.googleapis.com",
+        "https://deadbydaylight.fandom.com/wiki/*"
       ]
     },
     "force_browser": "user",

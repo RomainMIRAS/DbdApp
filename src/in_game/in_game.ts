@@ -45,8 +45,7 @@ class InGame extends AppWindow {
   private async setToggleHotkeyText() {
     const gameClassId = await this.getCurrentGameClassId();
     const hotkeyText = await OWHotkeys.getHotkeyText(kHotkeys.toggle, gameClassId);
-    const hotkeyElem = document.getElementById('hotkey');
-    hotkeyElem.textContent = hotkeyText;
+    $('#hotkey').text(hotkeyText);
   }
 
   // Sets toggleInGameWindow as the behavior for the Ctrl+F hotkey
