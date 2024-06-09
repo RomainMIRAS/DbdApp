@@ -1,5 +1,3 @@
-import { DesktopWindow } from "./desktop/desktop";
-
 export const kWindowNames = {
   inGame: 'in_game',
   DesktopWindow: 'desktop'
