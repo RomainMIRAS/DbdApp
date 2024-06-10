@@ -5,6 +5,7 @@ import {
 } from '@overwolf/overwolf-api-ts';
 
 import { kWindowNames} from "../consts";
+import { ApiDeadWiki } from "../api/ApiDeadWiki";
 
 import RunningGameInfo = overwolf.games.RunningGameInfo;
 import AppLaunchTriggeredEvent = overwolf.extensions.AppLaunchTriggeredEvent;
@@ -19,8 +20,10 @@ class BackgroundController {
   private static _instance: BackgroundController;
   private _windows: Record<string, OWWindow> = {};
   private _gameListener: OWGameListener;
+  private dataGetter: ApiDeadWiki;
 
   private constructor() {
+    this.dataGetter = ApiDeadWiki.instance();
     // Populating the background controller's window dictionary
     this._windows[kWindowNames.DesktopWindow] = new OWWindow(kWindowNames.DesktopWindow);
     this._windows[kWindowNames.inGame] = new OWWindow(kWindowNames.inGame);
