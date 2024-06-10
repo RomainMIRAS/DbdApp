@@ -93,3 +93,35 @@ a {
   display: inline-block;
   margin-right: 10px;
 }
+
+#header {
+  height: 80px; 
+  display: flex;
+  align-items: center; 
+  padding: 0 10px; 
+  background-color: rgb(255, 255, 255);
+  
+}
+
+#header img {
+  height: 150px; 
+  margin-right: 10px; 
+  opacity: 1.5;
+}
+
+#header nav a {
+  padding: 0 10px;
+  line-height: 50px; 
+  font-size: 18px; 
+  color: #000; 
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s; 
+  display: inline-block;
+  
+}
+
+#header nav a:hover {
+  color: rgb(255, 0, 0);
+  transform: translateY(4px); 
+}
