@@ -18,6 +18,8 @@ export class Character {
         this.nom = nom;
         this.icon = icon;
         this.type = type;
+        this.perks = [];
+        this.addons = [];
     }
 
     public addPerk(perk: Perk) {

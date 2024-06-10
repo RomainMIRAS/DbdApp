@@ -3,14 +3,17 @@
 import { Perk } from '../model/Perk';
 import { Character} from '../model/Character';
 import { CharacterType } from '../model/Character';
+import $ from "jquery";
 
 export class ApiDeadWiki{
     private characterMap: Map<string, Character> = new Map<string, Character>();
 
     private static _instance: ApiDeadWiki;
+    private static _port = 15151;
   
     private constructor() {
         ApiDeadWiki.initDataMap();
+        console.log("ApiDeadWiki initialized");
     }
   
     public static instance() {
@@ -23,13 +26,15 @@ export class ApiDeadWiki{
 
     // Parse perks from the wikipedia perk tables
     protected static async parsePerks(url: string, characterType: CharacterType): Promise<void> {
-
-        // function overwolf.web.sendHttpRequest(url: string, method: overwolf.web.enums.HttpRequestMethods, headers: overwolf.web.FetchHeader[], data: string, callback: overwolf.CallbackFunction<overwolf.web.SendHttpRequestResult>): void
-        overwolf.web.sendHttpRequest(url, overwolf.web.enums.HttpRequestMethods.GET, [{ "key": "Content-Type", "value": "txt/html" }], "", (response) => {
-            console.log(response);
-            if (response.success && response.statusCode === 200) {
-                this.parsePerksFromHTML(response.data, characterType);
-            } else {
+        // Calling with $.ajax instead of fetch because fetch doesn't work with the deadbydaylight wiki
+        $.ajax({
+            url: url,
+            type: "GET",
+            headers: { "Content-Type": "text/html" },
+            success: (response) => {
+                this.parsePerksFromHTML(response, characterType);
+            },
+            error: (response) => {
                 console.error("Failed to fetch perks from " + url);
             }
         });
@@ -37,7 +42,8 @@ export class ApiDeadWiki{
 
     // Parse perks from HTML
     protected static parsePerksFromHTML(html: string, characterType: CharacterType): void {
-        const document  = DOMParser.prototype.parseFromString(html, "text/html");
+        // Parse HTML into DOM
+        const document  = new DOMParser().parseFromString(html, "text/html");
         // First element is apparently thead (jsdom is wack)
         // Grab all rows in table
         const perks = [...document.querySelector("tbody").children].slice(1)

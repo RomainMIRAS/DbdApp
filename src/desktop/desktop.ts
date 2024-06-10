@@ -1,5 +1,4 @@
 import { AppWindow } from "../AppWindow";
-import { ApiDeadWiki } from "../api/ApiDeadWiki";
 import { kWindowNames } from "../consts";
 
 class DesktopWindow extends AppWindow {
@@ -18,7 +17,6 @@ class DesktopWindow extends AppWindow {
     }
   
     public async run() {
-      console.log(ApiDeadWiki.instance().getDataMap());
     }
   }
   
