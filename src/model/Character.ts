@@ -8,14 +8,14 @@ export enum CharacterType {
 
 export class Character {
 
-    protected nom: string;
+    protected name: string;
     protected icon: string;
     protected type: CharacterType;
     protected perks: Perk[];
     protected addons: Addon[];
 
-    constructor(nom: string, icon: string, type: CharacterType) {
-        this.nom = nom;
+    constructor(name: string, icon: string, type: CharacterType) {
+        this.name = name;
         this.icon = icon;
         this.type = type;
         this.perks = [];
@@ -43,6 +43,6 @@ export class Character {
     }
 
     public getName() {
-        return this.nom;
+        return this.name;
     }
 }

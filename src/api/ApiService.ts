@@ -4,35 +4,41 @@ import { Perk } from '../model/Perk';
 import { Character} from '../model/Character';
 import { CharacterType } from '../model/Character';
 import $ from "jquery";
+import { AbstractBuild } from '../model/Build/AbstractBuild';
+import { Item } from '../model/Item';
+import { Addon } from '../model/Addon';
 
-export class ApiDeadWiki{
+export class ApiService{
     private characterMap: Map<string, Character> = new Map<string, Character>();
+    private perkMap: Map<string, Perk> = new Map<string, Perk>();
+    private itemMap: Map<string, Item> = new Map<string, Item>();
+    private addonMap: Map<string, Addon> = new Map<string, Addon>();
+    private buildMap: Map<string, AbstractBuild> = new Map<string, AbstractBuild>();
 
-    private static _instance: ApiDeadWiki;
-    private static _port = 15151;
+    private static _instance: ApiService;
   
     private constructor() {
-        ApiDeadWiki.initDataMap();
-        console.log("ApiDeadWiki initialized");
+        ApiService.initCharacterMap();
+        console.log("ApiService initialized");
     }
   
     public static instance() {
       if (!this._instance) {
-        this._instance = new ApiDeadWiki();
+        this._instance = new ApiService();
       }
   
       return this._instance;
     }
 
     // Parse perks from the wikipedia perk tables
-    protected static async parsePerks(url: string, characterType: CharacterType): Promise<void> {
+    protected static async parseCharacter(url: string, characterType: CharacterType): Promise<void> {
         // Calling with $.ajax instead of fetch because fetch doesn't work with the deadbydaylight wiki
         $.ajax({
             url: url,
             type: "GET",
             headers: { "Content-Type": "text/html" },
             success: (response) => {
-                this.parsePerksFromHTML(response, characterType);
+                this.parseCharacterFromHTML(response, characterType);
             },
             error: (response) => {
                 console.error("Failed to fetch perks from " + url);
@@ -41,7 +47,7 @@ export class ApiDeadWiki{
     }
 
     // Parse perks from HTML
-    protected static parsePerksFromHTML(html: string, characterType: CharacterType): void {
+    protected static parseCharacterFromHTML(html: string, characterType: CharacterType): void {
         // Parse HTML into DOM
         const document  = new DOMParser().parseFromString(html, "text/html");
         // First element is apparently thead (jsdom is wack)
@@ -68,26 +74,46 @@ export class ApiDeadWiki{
         perks.forEach((perk) => {
             const character = this._instance.characterMap.get(perk.character);
             if (character) {
-                character.addPerk(new Perk(perk.perkName, perk.perkImage, perk.description,character));
+                let perkToAdd = new Perk(perk.perkName, perk.perkImage, perk.description, character);
+                character.addPerk(perkToAdd);
+                this._instance.perkMap.set(perk.perkName, perkToAdd);
             } else {
                 const newCharacter = new Character(perk.character, perk.characterImage, characterType);
-                newCharacter.addPerk(new Perk(perk.perkName, perk.perkImage, perk.description, newCharacter));
+                let perkToAdd = new Perk(perk.perkName, perk.perkImage, perk.description, newCharacter);
+                newCharacter.addPerk(perkToAdd);
                 this._instance.characterMap.set(perk.character, newCharacter);
+                this._instance.perkMap.set(perk.perkName, perkToAdd);
             }
         });
     }
 
     // Main function
-    protected static async initDataMap(){
+    protected static async initCharacterMap(){
         // Grab webpage
-        this.parsePerks("https://deadbydaylight.fandom.com/wiki/Killer_Perks", CharacterType.Killer);
-        this.parsePerks("https://deadbydaylight.fandom.com/wiki/Survivor_Perks", CharacterType.Survivor);
+        this.parseCharacter("https://deadbydaylight.fandom.com/wiki/Killer_Perks", CharacterType.Killer);
+        this.parseCharacter("https://deadbydaylight.fandom.com/wiki/Survivor_Perks", CharacterType.Survivor);
     }
 
-    public getDataMap(): Map<string, Character> {
+    public getCharacterMap(): Map<string, Character> {
         return this.characterMap;
     }
 
+    public getPerkMap(): Map<string, Perk> {
+        return this.perkMap;
+    }
+
+    public getItemMap(): Map<string, Item> {
+        return this.itemMap;
+    }
+
+    public getAddonMap(): Map<string, Addon> {
+        return this.addonMap;
+    }
+
+    public getBuildMap(): Map<string, AbstractBuild> {
+        return this.buildMap;
+    }
+    
 }
 
 
