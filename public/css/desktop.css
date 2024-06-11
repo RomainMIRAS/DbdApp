@@ -10,13 +10,6 @@ body {
   font-family: sans-serif;
 }
 
-main {
-  flex: auto;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
 #header {
   height: 80px; 
   display: flex;
@@ -47,4 +40,49 @@ main {
 #header nav a:hover {
   color: rgb(255, 0, 0);
   transform: translateY(4px); 
+}
+
+#character-table-container {
+  max-height: 90vh; 
+  overflow-y: hidden;
+}
+
+#character-table {
+  margin-top: 50px;
+  margin-left: 50px;
+  text-align: left;
+}
+
+#character-table tr td {
+  padding-top: 10px;  
+  padding-bottom: 10px;  
+}
+
+#character-table-container:hover {
+  overflow-y: auto;
+}
+
+#character-table-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#character-table-container::-webkit-scrollbar-thumb {
+  background-color: #862c2c;
+  border-radius: 3px;
+}
+
+#main-content {
+  position: relative; 
+  display: flex;
+  justify-content: flex-start;
+}
+
+#info-container {
+  color: aqua;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: rgb(150, 26, 26);
+  border: 1px solid rgb(158, 31, 31);
 }
