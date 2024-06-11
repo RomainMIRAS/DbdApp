@@ -51,7 +51,7 @@ export class ApiService{
     protected parseCharacter(url: string, characterType: CharacterType): void {
         // Calling with $.ajax instead of fetch because fetch doesn't work with the deadbydaylight wiki
         $.ajax({
-            async: false,
+            async: false, // Synchronous because we need to wait for the perks to be added to the character
             url: url,
             type: "GET",
             headers: { "Content-Type": "text/html" },
