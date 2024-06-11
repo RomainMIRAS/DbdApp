@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
@@ -9,22 +8,19 @@
   <link rel="stylesheet" href="../../css/desktop.css" />
   <link rel="stylesheet" href="../../css/modal.css" />
   <title>The Entity's Eye</title>
-  <script defer src="js/desktop.js"></script>
 </head>
-
 <body class="desktop">
   <!-- -------------------------------- Header ------------------------------- -->
-
   <header id="header" class="app-header">
     <img src="../../img/eelogo.png" />
     <nav>
-      <a href="#">Profil</a>
-      <a href="#">Slayers</a>
-      <a href="#">Survivors</a>
-      <a href="#">Patchnote</a>
-      <a href="#">Bozo</a>
-      <a href="#">Le</a>
-      <a href="#">Clown</a>
+      <a href="#" class="nav-link" data-content="profil">Profil</a>
+      <a href="#" class="nav-link" data-content="killers">Killers</a>
+      <a href="#" class="nav-link" data-content="survivors">Survivors</a>
+      <a href="#" class="nav-link" data-content="patchnote">Patchnote</a>
+      <a href="#" class="nav-link" data-content="bozo">Bozo</a>
+      <a href="#" class="nav-link" data-content="le">Le</a>
+      <a href="#" class="nav-link" data-content="clown">Clown</a>
     </nav>
     <div class="window-controls-group">
       <button id="minimizeButton" class="window-control window-control-minimize"></button>
@@ -34,46 +30,20 @@
   </header>
 
   <!-- --------------------------------- Main -------------------------------- -->
-  <main>
-    <div class="desktopTop">
-      <h1>The Entity's Eye</h1>
-      <p>
-        The Entity's Eye is a sample app that listens to real-time game events
-        and displays them in a transparent window. This app is built with
-        Electron and uses the Overwolf Game Events Provider to listen to game
-        events.
-      </p>
-      <div id="version"></div>
-    </div>
-    <div class="desktopBottom">
-      <!-- Launch a game! -->
-      <div id="left">
-        <h1>
-          Launch a game and the In-Game window will pop-up automatically!
-        </h1>
-      </div>
-      <!-- Launch a game! -->
-      <div id="middle">
-        What can you learn with this sample app?
-        <br /><br />
-        1. How to listen to real-time game events and how to identify specific
-        events like match start/end, kill, and death.
-        <br /><br />
-        2. How to use a transparent background window as a service bus, that
-        acts as the main controller of your app.
-        <br /><br />
-        3. How to use Hotkeys that show/hide your app while you are in-game.
-      </div>
-      <!-- picture -->
-      <div id="right">
-        <div style="text-align: center">
-          <div style="display: inline-block">
-            <img src="../../img/cool_wolf.png" />
-          </div>
-        </div>
-      </div>
-    </div>
+  <main id="main-content">
+    <table id="character-table">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Name</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Les lignes seront ajoutées ici -->
+      </tbody>
+    </table>
+    
   </main>
 </body>
-
 </html>
