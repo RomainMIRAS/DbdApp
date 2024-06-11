@@ -45,4 +45,8 @@ export class Character {
     public getName() {
         return this.name;
     }
+
+    public getType() {
+        return this.type;
+    }
 }

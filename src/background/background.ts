@@ -9,6 +9,7 @@ import { ApiService } from "../api/ApiService";
 
 import RunningGameInfo = overwolf.games.RunningGameInfo;
 import AppLaunchTriggeredEvent = overwolf.extensions.AppLaunchTriggeredEvent;
+import { data } from 'jquery';
 
 // The background controller holds all of the app's background logic - hence its name. it has
 // many possible use cases, for example sharing data between windows, or, in our case,
@@ -22,8 +23,7 @@ class BackgroundController {
   private _gameListener: OWGameListener;
   private dataGetter: ApiService;
 
-  private constructor() {
-    this.dataGetter = ApiService.instance();
+  private constructor() {    
     // Populating the background controller's window dictionary
     this._windows[kWindowNames.DesktopWindow] = new OWWindow(kWindowNames.DesktopWindow);
     this._windows[kWindowNames.inGame] = new OWWindow(kWindowNames.inGame);
@@ -37,6 +37,10 @@ class BackgroundController {
     overwolf.extensions.onAppLaunchTriggered.addListener(
       e => this.onAppLaunchTriggered(e)
     );
+
+    // Initialize the ApiService
+    this.dataGetter = ApiService.instance();
+    this.dataGetter.initApiService();
   };
 
   // Implementing the Singleton design pattern
