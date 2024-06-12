@@ -37,7 +37,7 @@
         "https://*.google-analytics.com",
         "http://*.google-analytics.com",
         "https://www.googleapis.com",
-        "https://deadbydaylight.fandom.com"
+        "https://dbd.tricky.lol"
       ]
     },
     "force_browser": "user",
