@@ -15,7 +15,6 @@ class DesktopWindow extends AppWindow {
       if (!this._instance) {
         this._instance = new DesktopWindow();
       }
-  
       return this._instance;
     }
 
@@ -27,7 +26,18 @@ class DesktopWindow extends AppWindow {
       });
     }
 
+    private removeClass(): void {
+      const tab = document.getElementById("character-table-body") as HTMLTableSectionElement
+      for (const row of tab.rows) {
+        for (const cell of row.cells) {
+            const img = cell.querySelector("img")
+            img.classList.remove("clicked")
+        }
+      }
+    }
+
     private loadContent(contentId: string): void {
+    let choice = "";
       let content = "";
       switch (contentId) {
           case "profil":
@@ -38,9 +48,35 @@ class DesktopWindow extends AppWindow {
               break;
           case "killers":
               content = `
-                  <h1>Killers Page</h1>
-                  <p>Here is the list of killers.</p>
+                    <div id="character-table-container">
+                      <table id="character-table">
+                        <tbody id="character-table-body">
+                        </tbody>
+                      </table>
+                    </div>
+                    <div id="info-container">
+                      <div id="info-header">
+                        <h1 id="title-info-container"></h1>
+                      </div>
+                      <div id="all-info">
+                        <table id="table-info-container">
+                          <tr>
+                            <td id="image-td1" class="image-container"><img id="table-info-container-h1" class="perkbackground" src="" alt="" width="100" height="100"><span></span></td>
+                            <td id="table-info-container-d1"></td>
+                          </tr>
+                          <tr>
+                            <td id="image-td2" class="image-container"><img id="table-info-container-h2" class="perkbackground" src="" alt="" width="100" height="100"><span></span></td>
+                            <td id="table-info-container-d2"></td>
+                          </tr>
+                          <tr>
+                            <td id="image-td3" class="image-container"><img id="table-info-container-h3" class="perkbackground" src="" alt="" width="100" height="100"><span></span></td>
+                            <td id="table-info-container-d3"></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
               `;
+              choice="killers"
               break;
           case "survivors":
               content = `
@@ -85,9 +121,12 @@ class DesktopWindow extends AppWindow {
               break;
       }
       $("#main-content").html(content);
+      if (choice=="killers") {
+        DesktopWindow.instance().loadKiller();
+      }
     }
-  
-    public async run() {
+
+    private loadKiller() {
       const test = ApiService.instance().getCharacterMap()
       for (let [key, value] of test) {
         if (key === undefined) {
@@ -101,39 +140,67 @@ class DesktopWindow extends AppWindow {
       let counter = 0;
     
       for (const [, value] of test.entries()) {
-        if (counter % 2 === 0) {
-          // Créez une nouvelle ligne toutes les deux itérations
-          currentRow = document.createElement("tr");
-          characterTableBody.appendChild(currentRow);
-        }
-      
-        // Créer une cellule pour l'icône de chaque personnage
-        const iconCell = document.createElement("td");
-      
-        // Créer l'image pour l'icône
-        const img = document.createElement("img");
-        img.src = value.getIcon();
-        img.alt = `icon`;
-        img.width = 150;  
-        img.height = 150; 
-      
-        // Ajouter un événement de clic à l'image pour afficher les informations
-        img.addEventListener("click", function () {
-          // Afficher les informations du personnage dans le conteneur d'informations
-          infoContainer.textContent = value.getName();
-        });
-      
-        // Ajouter l'image à la cellule d'icône
-        iconCell.appendChild(img);
-      
-        // Ajouter la cellule d'icône à la ligne
-        currentRow.appendChild(iconCell);
+        if (value.getType()==CharacterType.Killer) {
+          if (counter % 2 === 0) {
 
-        counter++;
-      }
-    
-      DesktopWindow.instance().initEventHandlers();
+            currentRow = document.createElement("tr");
+            characterTableBody.appendChild(currentRow);
+          }
+
+          const iconCell = document.createElement("td");
+      
+
+          const img = document.createElement("img");
+          img.src = value.getIcon();
+          img.alt = `icon`;
+          img.width = 200;  
+          img.height = 200; 
+      
+ 
+          img.addEventListener("click", function () {
+            const title=document.getElementById("title-info-container")
+            title.textContent = value.getName();
+
+            const perk = value.getPerks()
+
+            const imgperk1 = document.getElementById("table-info-container-h1")
+            imgperk1.setAttribute("src",perk[0].icon)
+            const descperk1 = document.getElementById("table-info-container-d1")
+            descperk1.innerHTML = decodeURIComponent(perk[0].description)
+            const span1 = document.querySelector("#image-td1 span");
+            span1.textContent = perk[0].name
+
+            const imgperk2 = document.getElementById("table-info-container-h2")
+            imgperk2.setAttribute("src",perk[1].icon)
+            const descperk2 = document.getElementById("table-info-container-d2")
+            descperk2.innerHTML = decodeURIComponent(perk[1].description)
+            const span2 = document.querySelector("#image-td2 span");
+            span2.textContent = perk[1].name
+
+            const imgperk3 = document.getElementById("table-info-container-h3")
+            imgperk3.setAttribute("src",perk[2].icon)
+            const descperk3 = document.getElementById("table-info-container-d3")
+            descperk3.innerHTML = decodeURIComponent(perk[2].description)
+            const span3 = document.querySelector("#image-td3 span");
+            span3.textContent = perk[2].name
+
+            DesktopWindow.instance().removeClass();
+            img.classList.toggle("clicked");
+
+          });
+          iconCell.appendChild(img);
+          currentRow.appendChild(iconCell);
+          counter++;
+        }    
+        const tab = document.getElementById("character-table-body") as HTMLTableSectionElement
+        tab.rows[0].cells[0].querySelector("img").click()
     }
   }
+  
+    public async run() {
+        DesktopWindow.instance().initEventHandlers();
+        //DesktopWindow.instance().loadKiller();
+      }
+    }
   
 DesktopWindow.instance().run();

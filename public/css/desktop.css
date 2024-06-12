@@ -3,6 +3,7 @@ body {
   flex-direction: column;
   margin: 0px;
   min-height: 100vh;
+  min-width: 100vh;
   overflow: hidden;
   font-size: 14px;
   background-color: #464343;
@@ -45,11 +46,12 @@ body {
 #character-table-container {
   max-height: 90vh; 
   overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 #character-table {
-  margin-top: 50px;
-  margin-left: 50px;
+  margin-top: 25px;
+  margin-left: 25px;
   text-align: left;
 }
 
@@ -62,11 +64,11 @@ body {
   overflow-y: auto;
 }
 
-#character-table-container::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 6px;
 }
 
-#character-table-container::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: #862c2c;
   border-radius: 3px;
 }
@@ -78,11 +80,76 @@ body {
 }
 
 #info-container {
-  color: aqua;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: auto;
+  background-color: #333;
+  color: #fff;
   position: absolute;
   top: 0;
   right: 0;
-  padding: 10px;
-  background-color: rgb(150, 26, 26);
-  border: 1px solid rgb(158, 31, 31);
+  width: 60%;
+  height: 62%
+}
+
+#title-info-container {
+  margin: 0;
+}
+
+#info-header img {
+  float: right; /* Alignement de l'image à droite */
+}
+
+#all-info {
+  overflow: auto;
+  width: 100%;
+  margin-top: 10px;
+  display: block; /* Assurez-vous que les éléments sont en bloc */
+  float: right; /* Alignement à droite */
+}
+
+#table-info-container {
+  border-collapse: collapse;
+}
+
+td {
+  word-wrap: break-word;
+  font-size: 12px;
+  border: 1px solid #444;
+  padding: 5px;
+}
+
+.perkbackground{
+  background-image: url('../../img/very_rare.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.clicked {
+  filter: brightness(0.3);
+}
+
+.image-container {
+  position: relative;
+}
+
+/* Style du texte en survol */
+.image-container span {
+  position: absolute;
+  bottom: 10px; /* Ajustez la position verticale */
+  left: 0;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  transition: opacity 0.3s ease; /* Transition pour l'opacité */
+}
+
+/* Afficher le texte au survol */
+.image-container:hover span {
+  opacity: 1;
 }
