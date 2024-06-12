@@ -1,4 +1,5 @@
 import { Addon } from "../CharacterSide/Addon";
+import { Character } from "../CharacterSide/Character";
 import { Item } from "../CharacterSide/Item";
 import { Perk } from "../CharacterSide/Perk";
 import { AbstractBuild } from "./AbstractBuild";
@@ -67,7 +68,7 @@ export class SurvivorBuild extends AbstractBuild{
     }
 
     // Returns the character of the survivor build
-    public getCharacter(): string {
-        return "Survivor";
+    public getCharacter(): Character {
+        return null;
     }
 }
