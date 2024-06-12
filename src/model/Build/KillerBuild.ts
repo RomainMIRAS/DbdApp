@@ -1,12 +1,13 @@
 import { Addon } from "../CharacterSide/Addon";
+import { Character } from "../CharacterSide/Character";
 import { Item } from "../CharacterSide/Item";
 import { Perk } from "../CharacterSide/Perk";
 import { AbstractBuild } from "./AbstractBuild";
 
 export class KillerBuild extends AbstractBuild{
-    character: string; // Can only have 1 character - name of the character
+    character: Character; // Can only have 1 character - name of the character
     
-    constructor(character: string ) {
+    constructor(buildName: string, character: Character){
         super();
         this.character = character;
         this.perks = [];
@@ -60,7 +61,7 @@ export class KillerBuild extends AbstractBuild{
     }
 
     // Returns the character of the killer build
-    public getCharacter(): string {
+    public getCharacter(): Character {
         return this.character;
     }
 

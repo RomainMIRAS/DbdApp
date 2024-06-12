@@ -1,4 +1,5 @@
 import { Addon } from "../CharacterSide/Addon";
+import { Character } from "../CharacterSide/Character";
 import { Item } from "../CharacterSide/Item";
 import { Perk } from "../CharacterSide/Perk";
 
@@ -45,7 +46,7 @@ export abstract class AbstractBuild{
 
     public abstract toString(): string;
 
-    public abstract getCharacter(): string;
+    public abstract getCharacter(): Character;
 
     public abstract getItem(): Item;
 }

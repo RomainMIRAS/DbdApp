@@ -26,6 +26,7 @@
     "zip-a-folder": "^0.0.12"
   },
   "dependencies": {
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "papaparse": "^5.4.1"
   }
 }
