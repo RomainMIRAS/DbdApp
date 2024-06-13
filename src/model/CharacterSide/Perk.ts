@@ -2,12 +2,12 @@ import { Role } from "./Character";
 
 class Perk {
     // Propriétés de la classe
-    private id: string;
+    private id: string; // String for the id of the perk
     private categories: string[];
-    private name: string;
+    private name: string; // Display name of the perk
     private description: string;
     private role: Role;
-    private characterId: string;
+    private characterId: string; // Id Number of the character associated with the perk
     private teachable: number;
     private image: string;
   

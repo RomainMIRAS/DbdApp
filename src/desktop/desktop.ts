@@ -1,4 +1,5 @@
 import { AppWindow } from "../AppWindow";
+import { ApiService } from "../api/ApiService";
 import { kWindowNames } from "../consts";
 
 class DesktopWindow extends AppWindow {
@@ -17,6 +18,13 @@ class DesktopWindow extends AppWindow {
     }
   
     public async run() {
+      ApiService.instance().getCharacterMap().forEach((characterMap) => {
+        console.log(characterMap);
+      });
+
+      ApiService.instance().getPerkMap().forEach((perkMap) => {
+        console.log(perkMap);
+      });
     }
   }
   
