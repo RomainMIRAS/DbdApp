@@ -27,7 +27,7 @@ class DesktopWindow extends AppWindow {
     }
 
     private removeClass(): void {
-      const tab = document.getElementById("character-table-body") as HTMLTableSectionElement
+      const tab = $("#character-table-body")[0] as HTMLTableSectionElement;
       for (const row of tab.rows) {
         for (const cell of row.cells) {
             const img = cell.querySelector("img")
@@ -170,12 +170,12 @@ class DesktopWindow extends AppWindow {
             const span1 = document.querySelector("#image-td1 span");
             span1.textContent = perk[0].getName()
 
-            const imgperk2 = document.getElementById("table-info-container-h2")
-            imgperk2.setAttribute("src",perk[1].getImage())
+            $("#table-info-container-h2").attr("src",perk[1].getImage());
+            
             const descperk2 = document.getElementById("table-info-container-d2")
             descperk2.innerHTML =perk[1].getDescription()
-            const span2 = document.querySelector("#image-td2 span");
-            span2.textContent = perk[1].getName()
+            
+            $("#image-td2 span").text(perk[1].getName());
 
             const imgperk3 = document.getElementById("table-info-container-h3")
             imgperk3.setAttribute("src",perk[2].getImage())
