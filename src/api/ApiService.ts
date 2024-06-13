@@ -434,6 +434,7 @@ export class ApiService{
             buildObject.addAddon(this.addonMap.get(build["addon2"]));
             buildObject.setAverageRating(build["averageRating"]);
             buildObject.setRatingCount(build["ratingCount"]);
+            buildObject.setOffering(this.offeringMap.get(build["offering"]));
             buildObject.setItemPower(this.itemMap.get(build["itemPower"]));
             buildObject.setCharacter(this.characterMap.get(parseInt(build["character"])));
             buildSet.add(buildObject);

@@ -1,3 +1,4 @@
+import { Offering } from "../Offering";
 import { Addon } from "./Addon";
 import { Character, Role } from "./Character";
 import { Item } from "./Item";
@@ -8,7 +9,7 @@ export class Build{
     protected addons: Addon[]; // Array of max 2 addons
     protected buildName: string; // Optional build name
     protected role : Role;
-    //protected offering : Offering;// Optional offering
+    protected offering : Offering;// Optional offering
     protected itemPower : Item;
     protected averageRating : number;
     protected ratingCount : number;
@@ -86,6 +87,18 @@ export class Build{
 
     public setCharacter(character: Character){
         this.character = character;
+    }
+
+    public getCharacter(){
+        return this.character;
+    }
+
+    public setOffering(offering: Offering){
+        this.offering = offering;
+    }
+
+    public getOffering(){
+        return this.offering;
     }
 
     public getPerkCount(){
