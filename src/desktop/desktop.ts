@@ -2,7 +2,7 @@ import { AppWindow } from "../AppWindow";
 import { ApiService } from "../api/ApiService";
 import { kWindowNames } from "../consts";
 import $ from "jquery";
-import { CharacterType } from "../model/Character";
+import { Role } from "../model/CharacterSide/Character";
 
 class DesktopWindow extends AppWindow {
     private static _instance: DesktopWindow;
@@ -140,7 +140,7 @@ class DesktopWindow extends AppWindow {
       let counter = 0;
     
       for (const [, value] of test.entries()) {
-        if (value.getType()==CharacterType.Killer) {
+        if (value.getRole()==Role.KILLER) {
           if (counter % 2 === 0) {
 
             currentRow = document.createElement("tr");
@@ -151,7 +151,7 @@ class DesktopWindow extends AppWindow {
       
 
           const img = document.createElement("img");
-          img.src = value.getIcon();
+          img.src = value.getImage();
           img.alt = `icon`;
           img.width = 200;  
           img.height = 200; 
@@ -164,25 +164,25 @@ class DesktopWindow extends AppWindow {
             const perk = value.getPerks()
 
             const imgperk1 = document.getElementById("table-info-container-h1")
-            imgperk1.setAttribute("src",perk[0].icon)
+            imgperk1.setAttribute("src",perk[0].getImage())
             const descperk1 = document.getElementById("table-info-container-d1")
-            descperk1.innerHTML = decodeURIComponent(perk[0].description)
+            descperk1.innerHTML = decodeURIComponent(perk[0].getDescription())
             const span1 = document.querySelector("#image-td1 span");
-            span1.textContent = perk[0].name
+            span1.textContent = perk[0].getName()
 
             const imgperk2 = document.getElementById("table-info-container-h2")
-            imgperk2.setAttribute("src",perk[1].icon)
+            imgperk2.setAttribute("src",perk[1].getImage())
             const descperk2 = document.getElementById("table-info-container-d2")
-            descperk2.innerHTML = decodeURIComponent(perk[1].description)
+            descperk2.innerHTML = decodeURIComponent(perk[1].getDescription())
             const span2 = document.querySelector("#image-td2 span");
-            span2.textContent = perk[1].name
+            span2.textContent = perk[1].getName()
 
             const imgperk3 = document.getElementById("table-info-container-h3")
-            imgperk3.setAttribute("src",perk[2].icon)
+            imgperk3.setAttribute("src",perk[2].getImage())
             const descperk3 = document.getElementById("table-info-container-d3")
-            descperk3.innerHTML = decodeURIComponent(perk[2].description)
+            descperk3.innerHTML = decodeURIComponent(perk[2].getDescription())
             const span3 = document.querySelector("#image-td3 span");
-            span3.textContent = perk[2].name
+            span3.textContent = perk[2].getName()
 
             DesktopWindow.instance().removeClass();
             img.classList.toggle("clicked");
