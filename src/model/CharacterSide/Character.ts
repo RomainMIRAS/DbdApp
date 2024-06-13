@@ -1,8 +1,8 @@
 import { Perk } from "./Perk";
 
 export enum Role {
-    SURVIVOR = "survivor",
-    KILLER = "killer",
+    SURVIVOR = "Survivor",
+    KILLER = "Killer",
   }
 
 class Character {
@@ -10,20 +10,19 @@ class Character {
     // Enumération des rôles possibles avec un type enum
 
     // Propriétés de la classe
-    private id : string;
-    private idName: string;
-    private name: string;
+    private id : string; // Number for the id of the character
+    private idName: string; // Name of the character in the database
+    private name: string; // Display name of the character
     private role: Role;
     private difficulty: string;
     private gender: string;
-    private height: string;
     private bio: string;
     private story: string;
     private tunables: Map<string, number>; // Liste of all specific caracteristics for a killer
     private item: string; // Name of the power of the killer ( String like Item_Slasher_{name of the power} )
-    private outfit: string[];
     private dlc: string; // Name of the dlc
-    private image: string;
+    private iconPath: string;
+    private backgroundPath: string;
     private perks: Perk[]; // Liste des perks associés
   
     constructor(
@@ -33,14 +32,12 @@ class Character {
       role: Role,
       difficulty: string,
       gender: string,
-      height: string,
       bio: string,
       story: string,
-      tunables: Map<string, number>,
       item: string,
-      outfit: string[],
       dlc: string,
-      image: string
+      iconPath: string,
+      backgroundPath: string
     ) {
       this.id = id;
       this.idName = idName;
@@ -48,14 +45,12 @@ class Character {
       this.role = role;
       this.difficulty = difficulty;
       this.gender = gender;
-      this.height = height;
       this.bio = bio;
       this.story = story;
-      this.tunables = tunables;
       this.item = item;
-      this.outfit = outfit;
       this.dlc = dlc;
-      this.image = image;
+      this.iconPath = iconPath;
+      this.backgroundPath = backgroundPath;
       this.perks = [];
     }
   
@@ -83,10 +78,6 @@ class Character {
       return this.gender;
     }
   
-    public getHeight(): string {
-      return this.height;
-    }
-  
     public getBio(): string {
       return this.bio;
     }
@@ -94,29 +85,21 @@ class Character {
     public getStory(): string {
       return this.story;
     }
-  
-    /**
-     * 
-     * @returns Map<string, number> : Liste des caractéristiques spécifiques pour un tueur
-     */
-    public getTunables(): Map<string, number>{
-      return this.tunables;
-    }
-  
+    
     public getItem(): any {
       return this.item;
-    }
-  
-    public getOutfit(): string[] {
-      return this.outfit;
     }
   
     public getDlc(): string {
       return this.dlc;
     }
   
-    public getImage(): string {
-      return this.image;
+    public getIconPath(): string {
+      return this.iconPath;
+    }
+
+    public getBackgroundPath(): string {
+      return this.backgroundPath;
     }
 
     public addPerk(perk: Perk): void {
