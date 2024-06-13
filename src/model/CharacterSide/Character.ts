@@ -1,3 +1,5 @@
+import { ApiService } from "../../api/ApiService";
+import { Item } from "./Item";
 import { Perk } from "./Perk";
 
 export enum Role {
@@ -108,6 +110,14 @@ class Character {
   
     public getPerks(): Perk[] {
       return this.perks;
+    }
+
+    /**
+     * DO NOT USE THIS METHOD
+     * @returns the power of the killer
+     */
+    public getItemPower(): Item {
+      return ApiService.instance().getItemMap().get(this.item);
     }
   }
   
