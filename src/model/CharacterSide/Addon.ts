@@ -1,41 +1,123 @@
-// Objet Addon
-import { Character } from './Character';
+import { ApiService } from "../../api/ApiService";
+import { Character, Role } from "./Character";
+import { Item, ItemType } from "./Item";
+
+export enum Rarity {
+    ARTIFACT = "Artifact",
+    SPECIAL_EVENT = "SpecialEvent",
+    LEGENDARY = "Legendary",
+    ULTRA_RARE = "UltraRare",
+    VERY_RARE = "VeryRare",
+    RARE = "Rare",
+    UNCOMMON = "Uncommon",
+    COMMON = "Common",
+}
 
 export class Addon {
-    protected icon: string;
-    protected name: string;
-    protected description: string;
-    protected tier: number;
-    protected character: Character;
-
-    constructor(icon: string, name: string, description: string, character: Character) {
-        this.icon = icon;
-        this.name = name;
-        this.description = description;
-        this.character = character;
+    private id: string;
+    private type: string;
+    private itemType: ItemType;
+    private parentItem: string[]; // Array of the list of the parent item id
+    private killerAbility: string;
+    private name: string;
+    private description: string;
+    private role: Role;
+    private rarity: string;
+    private canBeUsedAfterEvent: boolean;
+    private bloodweb: boolean;
+    private image: string;
+  
+    constructor(
+        id: string,
+      type: string,
+      itemType: ItemType,
+      parentItem: string[],
+      killerAbility: string,
+      name: string,
+      description: string,
+      role: Role,
+      rarity: string,
+      canBeUsedAfterEvent: boolean,
+      bloodweb: boolean,
+      image: string
+    ) {
+        this.id = id;
+      this.type = type;
+      this.itemType = itemType;
+      this.parentItem = parentItem;
+      this.killerAbility = killerAbility;
+      this.name = name;
+      this.description = description;
+      this.role = role;
+      this.rarity = rarity;
+      this.canBeUsedAfterEvent = canBeUsedAfterEvent;
+      this.bloodweb = bloodweb;
+      this.image = image;
     }
 
-    public getIcon() {
-        return this.icon;
+    // Méthodes pour obtenir les propriétés
+    public getId(): string {
+        return this.id;
+    }
+  
+    public getType(): string {
+      return this.type;
+    }
+  
+    public getItemType(): ItemType {
+      return this.itemType;
+    }
+  
+    public getParentItem(): string[] {
+      return this.parentItem;
+    }
+  
+    public getKillerAbility(): string {
+      return this.killerAbility;
+    }
+  
+    public getName(): string {
+      return this.name;
+    }
+  
+    public getDescription(): string {
+      return this.description;
+    }
+  
+    public getRole(): Role {
+      return this.role;
+    }
+  
+    public getRarity(): string {
+      return this.rarity;
+    }
+  
+    public getCanBeUsedAfterEvent(): boolean {
+      return this.canBeUsedAfterEvent;
+    }
+  
+    public getBloodweb(): boolean {
+      return this.bloodweb;
+    }
+  
+    public getImage(): string {
+      return this.image;
     }
 
-    public getName() {
-        return this.name;
+    public getItemPower(): Item {
+        if (this.role === Role.KILLER) {
+            return ApiService.instance().getItemMap().get(this.parentItem[0]);
+        } else {
+            return null;
+        }
     }
 
-    public getDescription() {
-        return this.description;
+    public getKillerLink(): Character {
+        if (this.role === Role.KILLER) {
+            return this.getItemPower().getKiller();
+        } else {
+            return null;
+        }
     }
-
-    public getTier() {
-        return this.tier;
-    }
-
-    public getCharacter() {
-        return this.character;
-    }
-
-    public setTier(tier: number) {
-        this.tier = tier;
-    }
-}
+  }
+  

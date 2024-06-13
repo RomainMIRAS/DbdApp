@@ -1,14 +1,13 @@
 
 
 import { Perk } from '../model/CharacterSide/Perk';
-import { Character} from '../model/CharacterSide/Character';
-import $, { get } from "jquery";
-import { AbstractBuild } from '../model/Build/AbstractBuild';
+import { Character, Role} from '../model/CharacterSide/Character';
+import $, { ajax, get } from "jquery";
+import { Build } from '../model/CharacterSide/Build';
 import { Item } from '../model/CharacterSide/Item';
 import { Addon } from '../model/CharacterSide/Addon';
 import Papa from 'papaparse';
-import { KillerBuild } from '../model/Build/KillerBuild';
-import { SurvivorBuild } from '../model/Build/SurvivorBuild';
+import { Offering } from '../model/Offering';
 
 export class ApiService{
     private baseUrlAPI: string = "https://dbd-info.com";
@@ -17,7 +16,8 @@ export class ApiService{
     private perkMap: Map<string, Perk>;
     private itemMap: Map<string, Item>;
     private addonMap: Map<string, Addon>;
-    private buildMap: Map<string, AbstractBuild>;
+    private offeringMap: Map<string, Offering>;
+    private buildMap: Map<string, Build>;
 
     private static _instance: ApiService;
   
@@ -26,14 +26,18 @@ export class ApiService{
         this.perkMap = new Map<string, Perk>();
         this.itemMap = new Map<string, Item>();
         this.addonMap = new Map<string, Addon>();
-        this.buildMap = new Map<string, AbstractBuild>();
+        this.buildMap = new Map<string, Build>();
+        this.offeringMap = new Map<string, Offering>();
     }
 
     public initApiService(){ 
         try {
             this.initCharacterMap();
             this.initPerkMap();
-            this.initOtzdarvaBuild();
+            this.initItemMap();
+            this.initAddonMap();
+            this.initOfferingMap();
+            // this.initOtzdarvaBuild();
         } catch (error) {
             console.error("Failed to initialize ApiService: " + error);
         }
@@ -89,6 +93,72 @@ export class ApiService{
             },
             error: (response) => {
                 console.error("Failed to fetch perks");
+            }
+        });
+    }
+
+    protected initItemMap(){
+        $.ajax({
+            async: false,
+            url: this.baseUrlAPI + "/api/items",
+            type: "GET",
+            success: (response) => {
+                try {
+                    if (response.success) {
+                        this.parseItems(response.data);
+                    } else {
+                        console.error("Failed to fetch items: " + response.message);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch items: " + error);
+                }
+            },
+            error: (response) => {
+                console.error("Failed to fetch items");
+            }
+        });
+    }
+
+    protected initAddonMap(){
+        $.ajax({
+            async: false,
+            url: this.baseUrlAPI + "/api/addons?bloodweb=true",
+            type: "GET",
+            success: (response) => {
+                try {
+                    if (response.success) {
+                        this.parseAddons(response.data);
+                    } else {
+                        console.error("Failed to fetch addons: " + response.message);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch addons: " + error);
+                }
+            },
+            error: (response) => {
+                console.error("Failed to fetch addons");
+            }
+        });
+    }
+
+    protected initOfferingMap(){
+        $.ajax({
+            async: false,
+            url: this.baseUrlAPI + "/api/offerings?available=available",
+            type: "GET",
+            success: (response) => {
+                try {
+                    if (response.success) {
+                        this.parseOfferings(response.data);
+                    } else {
+                        console.error("Failed to fetch offerings: " + response.message);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch offerings: " + error);
+                }
+            },
+            error: (response) => {
+                console.error("Failed to fetch offerings");
             }
         });
     }
@@ -161,6 +231,67 @@ export class ApiService{
         }
     }
 
+    protected parseItems(response: JSON){
+        for (let i in response){
+            let item = response[i];
+
+            let newAddon = new Item(
+                i,
+                item.RequiredAbility,
+                item.Role,
+                item.Rarity,
+                item.Type,
+                item.ItemType,
+                item.Name,
+                item.Description,
+                this.baseUrlAPI + item.IconFilePathList
+            );
+            this.itemMap.set(i, newAddon);
+        }
+    }
+
+    protected parseAddons(response: JSON){
+        for (let i in response){
+            let addon = response[i];
+            if (!addon.Bloodweb) continue;
+            let newAddon = new Addon(
+                i,
+                addon.Type,
+                addon.ItemType,
+                addon.ParentItem,
+                addon.KillerAbility,
+                addon.Name,
+                addon.Description,
+                addon.Role,
+                addon.Rarity,
+                addon.CanBeUsedAfterEvent,
+                addon.Bloodweb,
+                this.baseUrlAPI + addon.Image
+            );
+            this.addonMap.set(i, newAddon);
+        }
+    }
+
+    protected parseOfferings(response: JSON){
+        for (let i in response){
+            let offering = response[i];
+
+            let newOffering = new Offering(
+                i,
+                offering.Type,
+                offering.StatusEffects,
+                offering.Tags,
+                offering.Available,
+                offering.Name,
+                offering.Description,
+                offering.Role,
+                offering.Rarity,
+                this.baseUrlAPI + offering.Image
+            );
+            this.offeringMap.set(i, newOffering);
+        }
+    }
+
     public initOtzdarvaBuild(){
         const url = "https://docs.google.com/spreadsheets/d/1uk0OnioNZgLly_Y9pZ1o0p3qYS9-mpknkv3DlkXAxGA/export?format=csv&gid=1886110215";
         var thisBefore = this;
@@ -178,11 +309,11 @@ export class ApiService{
 
                             // Parse all killers
                             for (let i = 10; i < result.length; i += 13) {
-                                thisBefore.parseOtzdarvaBuildCharacter("killer", result, i, 1);
+                                thisBefore.parseOtzdarvaBuildCharacter(Role.KILLER, result, i, 1);
                             }
                             // Parse all survivors
                             for (let i = 10; result[i][10]; i += 13) {
-                                thisBefore.parseOtzdarvaBuildCharacter("survivor", result, i, 10);
+                                thisBefore.parseOtzdarvaBuildCharacter(Role.SURVIVOR, result, i, 10);
                             }
                         }
                     });
@@ -202,11 +333,12 @@ export class ApiService{
         // Loop over columns (builds)
         for (let i = 1; i < 8; i += 2) {
             let buildName = data[row + 2][col + i];
-            if (role === "killer") {
+            if (role === Role.KILLER) {
                 var character : Character = this.findCharacter(data[row][col]);
-                var build : AbstractBuild = new KillerBuild(buildName, character);
-            } else if (role === "survivor") {
-                var build : AbstractBuild = new SurvivorBuild(buildName);
+                var build : Build = new Build(buildName, role);
+                build.setCharacter(character);
+            } else if (role === Role.SURVIVOR) {
+                var build : Build = new Build(buildName,role);
             }
             // Loop over rows (perks)
             for (let j = 4; j < 8; j++) {
@@ -240,6 +372,77 @@ export class ApiService{
             }
         }
     }
+
+    /**
+     * Get the build from the API
+     * API ENDPOINT: /api/builds/{pageNumber}?role={role}
+     * Optional query character=null&category=null&version=null&rating=null&searchInput=null
+     * @param role 
+     */
+    public getBuildFromApi(role: Role, pageNumber: number, character: string, category: string, version: string, rating: string, searchInput: string): Set<Build>{
+        let url = this.baseUrlAPI + "/api/builds/" + pageNumber + "?role=" + role;
+        if (character !== null){
+            url += "&character=" + character;
+        }
+        if (category !== null){
+            url += "&category=" + category;
+        }
+        if (version !== null){
+            url += "&version=" + version;
+        }
+        if (rating !== null){
+            url += "&rating=" + rating;
+        }
+        if (searchInput !== null){
+            url += "&searchInput=" + searchInput;
+        }
+        let buildSet = new Set<Build>();
+        $.ajax({
+            async: false,
+            url: url,
+            type: "GET",
+            success: (response) => {
+                try {
+                    if (response.success) {
+                        buildSet = this.parseBuildsFromApi(response.data,role);
+                    } else {
+                        console.error("Failed to fetch builds: " + response.message);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch builds: " + error);
+                }
+            },
+            error: (response) => {
+                console.error("Failed to fetch builds");
+            }
+        });
+        return buildSet;
+    }
+
+    protected parseBuildsFromApi(response: JSON,role: Role): Set<Build>{
+        let builds = response["builds"];
+
+        let buildSet = new Set<Build>();
+        for (let i in builds){
+            let build = builds[i];
+            let buildObject = new Build(build["title"],role);
+            buildObject.addPerk(this.perkMap.get(build["perk1"]));
+            buildObject.addPerk(this.perkMap.get(build["perk2"]));
+            buildObject.addPerk(this.perkMap.get(build["perk3"]));
+            buildObject.addPerk(this.perkMap.get(build["perk4"]));
+            buildObject.addAddon(this.addonMap.get(build["addon1"]));
+            buildObject.addAddon(this.addonMap.get(build["addon2"]));
+            buildObject.setAverageRating(build["averageRating"]);
+            buildObject.setRatingCount(build["ratingCount"]);
+            buildObject.setOffering(this.offeringMap.get(build["offering"]));
+            buildObject.setItemPower(this.itemMap.get(build["itemPower"]));
+            buildObject.setCharacter(this.characterMap.get(parseInt(build["character"])));
+            buildSet.add(buildObject);
+        }
+        return buildSet;
+    }
+
+
 
     // Function that finds a perk based on its name
     // Role: "survivor" or "killer"
@@ -278,7 +481,11 @@ export class ApiService{
         return this.addonMap;
     }
 
-    public getBuildMap(): Map<string, AbstractBuild> {
+    public getOfferingMap(): Map<string, Offering> {
+        return this.offeringMap;
+    }
+
+    public getBuildMap(): Map<string, Build> {
         return this.buildMap;
     }
     
