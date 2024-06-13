@@ -6,7 +6,7 @@ body {
   min-width: 100vh;
   overflow: hidden;
   font-size: 14px;
-  background-color: #464343;
+  background: linear-gradient(to bottom, #464343 0%, #464343 60%, rgb(37, 35, 36)100%);
   color: black;
   font-family: sans-serif;
 }
@@ -43,13 +43,11 @@ body {
 }
 
 #character-table-container {
-  max-height: 90vh; 
-  overflow-y: hidden;
+  max-height: 85vh; 
   overflow-x: hidden;
 }
 
 #character-table {
-  margin-top: 25px;
   margin-left: 25px;
   text-align: left;
 }
@@ -68,7 +66,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #862c2c;
+  background-color: #000000;
   border-radius: 3px;
 }
 
@@ -89,7 +87,8 @@ body {
   top: 0;
   right: 0;
   width: 60%;
-  height: 62%
+  height: 70%;
+  border-radius: 5px;
 }
 
 #title-info-container {
@@ -107,8 +106,8 @@ body {
   overflow: auto;
   width: 100%;
   margin-top: 10px;
-  display: block; /* Assurez-vous que les éléments sont en bloc */
-  float: right; /* Alignement à droite */
+  display: block; 
+  float: right; 
 }
 
 #table-info-container {
@@ -123,6 +122,12 @@ body {
   padding: 5px;
 }
 
+.clicked {
+  filter: brightness(0.3);
+}
+
+/* background for perks */
+
 .perkbackground{
   background-image: url('../../img/very_rare.png');
   background-size: cover;
@@ -130,18 +135,15 @@ body {
   background-repeat: no-repeat;
 }
 
-.clicked {
-  filter: brightness(0.3);
-}
+/* hover text for perks */
 
 .image-container {
   position: relative;
 }
 
-/* Style du texte en survol */
 .image-container span {
   position: absolute;
-  bottom: 10px; /* Ajustez la position verticale */
+  bottom: 10px; 
   left: 0;
   opacity: 0;
   background-color: rgba(0, 0, 0, 0.7);
@@ -149,10 +151,35 @@ body {
   padding: 5px;
   border-radius: 3px;
   font-size: 12px;
-  transition: opacity 0.3s ease; /* Transition pour l'opacité */
+  transition: opacity 0.3s ease; 
 }
 
-/* Afficher le texte au survol */
 .image-container:hover span {
   opacity: 1;
+}
+
+/* Perks description */
+
+.uncommon-rarity-color {
+  color: #e8c252
+}
+
+.rare-rarity-color {
+  color: #199b1e
+}
+
+.veryrare-rarity-color {
+  color: #ac3ee3;
+}
+
+.FlavorText {
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-style: italic;
+  color: burlywood;
+}
+
+
+.subtitle-info {
+  padding: 10px;
+  font-family:Georgia, 'Times New Roman', Times, serif;
 }
