@@ -1,6 +1,7 @@
-import { Addon } from "../Addon";
-import { Item } from "../Item";
-import { Perk } from "../Perk";
+import { Addon } from "../CharacterSide/Addon";
+import { Character } from "../CharacterSide/Character";
+import { Item } from "../CharacterSide/Item";
+import { Perk } from "../CharacterSide/Perk";
 
 export abstract class AbstractBuild{
     protected perks: Perk[]; // Array of max 4 perks
@@ -14,7 +15,7 @@ export abstract class AbstractBuild{
     }
 
     public removePerk(perk: Perk): void {
-        this.perks = this.perks.filter((p) => p.name !== perk.name);
+        this.perks = this.perks.filter((p) => p.getName() !== perk.getName());
     }
 
     public addAddon(addon: Addon): void{
@@ -24,7 +25,7 @@ export abstract class AbstractBuild{
     }
 
     public removeAddon(addon: Addon): void{
-        this.addons = this.addons.filter((a) => a.name !== addon.name);
+        this.addons = this.addons.filter((a) => a.getName() !== addon.getName());
     }
 
     public addBuildName(buildName: string): void{
@@ -45,7 +46,7 @@ export abstract class AbstractBuild{
 
     public abstract toString(): string;
 
-    public abstract getCharacter(): string;
+    public abstract getCharacter(): Character;
 
     public abstract getItem(): Item;
 }

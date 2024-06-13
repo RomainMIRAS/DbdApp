@@ -1,6 +1,7 @@
-import { Addon } from "../Addon";
-import { Item } from "../Item";
-import { Perk } from "../Perk";
+import { Addon } from "../CharacterSide/Addon";
+import { Character } from "../CharacterSide/Character";
+import { Item } from "../CharacterSide/Item";
+import { Perk } from "../CharacterSide/Perk";
 import { AbstractBuild } from "./AbstractBuild";
 
 export class SurvivorBuild extends AbstractBuild{
@@ -30,7 +31,7 @@ export class SurvivorBuild extends AbstractBuild{
 
     // Removes a perk from the survivor build
     public removePerk(perk: Perk): void {
-        this.perks = this.perks.filter((p) => p.name !== perk.name);
+        this.perks = this.perks.filter((p) => p.getName() !== perk.getName());
     }
 
     // Adds an addon to the survivor build
@@ -42,7 +43,7 @@ export class SurvivorBuild extends AbstractBuild{
 
     // Removes an addon from the survivor build
     public removeAddon(addon: Addon): void {
-        this.addons = this.addons.filter((a) => a.name !== addon.name);
+        this.addons = this.addons.filter((a) => a.getName() !== addon.getName());
     }
 
     // Returns a string of the survivor build
@@ -52,11 +53,11 @@ export class SurvivorBuild extends AbstractBuild{
         str += "Build Name: " + this.buildName + "\n";
         str += "Perks: \n";
         this.perks.forEach((perk) => {
-            str += perk.name + "\n";
+            str += perk.getName() + "\n";
         });
         str += "Addons: \n";
         this.addons.forEach((addon) => {
-            str += addon.name + "\n";
+            str += addon.getName() + "\n";
         });
         return str;
     }
@@ -67,7 +68,7 @@ export class SurvivorBuild extends AbstractBuild{
     }
 
     // Returns the character of the survivor build
-    public getCharacter(): string {
-        return "Survivor";
+    public getCharacter(): Character {
+        return null;
     }
 }
