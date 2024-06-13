@@ -11,9 +11,9 @@ import { KillerBuild } from '../model/Build/KillerBuild';
 import { SurvivorBuild } from '../model/Build/SurvivorBuild';
 
 export class ApiService{
-    private apiURL: string = "https://dbd.tricky.lol/api/";
+    private baseUrlAPI: string = "https://dbd-info.com";
 
-    public characterMap: Map<string, Character>;
+    public characterMap: Map<number, Character>;
     private perkMap: Map<string, Perk>;
     private itemMap: Map<string, Item>;
     private addonMap: Map<string, Addon>;
@@ -22,7 +22,7 @@ export class ApiService{
     private static _instance: ApiService;
   
     private constructor() {
-        this.characterMap = new Map<string, Character>();
+        this.characterMap = new Map<number, Character>();
         this.perkMap = new Map<string, Perk>();
         this.itemMap = new Map<string, Item>();
         this.addonMap = new Map<string, Addon>();
@@ -52,11 +52,15 @@ export class ApiService{
     protected initCharacterMap(){
         $.ajax({
             async: false,
-            url: this.apiURL + "characters",
+            url: this.baseUrlAPI + "/api/characters",
             type: "GET",
             success: (response) => {
                 try {
-                    this.parseCharacters(response);
+                    if (response.success) {
+                        this.parseCharacters(response.data);
+                    } else {
+                        console.error("Failed to fetch characters: " + response.message);
+                    }
                 } catch (error) {
                     console.error("Failed to fetch perks: " + error);
                 }
@@ -70,11 +74,15 @@ export class ApiService{
     protected initPerkMap(){
         $.ajax({
             async: false,
-            url: this.apiURL + "perks",
+            url: this.baseUrlAPI + "/api/perks",
             type: "GET",
             success: (response) => {
                 try {
-                    this.parsePerks(response);
+                    if (response.success) {
+                        this.parsePerks(response.data);
+                    } else {
+                        console.error("Failed to fetch perks: " + response.message);
+                    }
                 } catch (error) {
                     console.error("Failed to fetch perks: " + error);
                 }
@@ -86,38 +94,31 @@ export class ApiService{
     }
 
     /**
-     * Parsing Response from API of API Tricky DBD
+     * Parsing Response from API of DBD-INFO
      * @param response 
      */
     protected parseCharacters(response: JSON){
         for (let i in response){
             let character = response[i];
 
-            //Construction de la map tunnables
-            let tunables = new Map<string, number>();
-            for (let j in character.tunables){
-                tunables.set(j, character.tunables[j]);
-            }
 
             // Création du character
             let newCharacter = new Character(
                 i,
-                character.id,
-                character.name,
-                character.role,
-                character.difficulty,
-                character.gender,
-                character.height,
-                character.bio,
-                character.story,
-                tunables,
-                character.item,
-                character.outfit,
-                character.dlc,
-                character.image
+                character.Id,
+                character.Name,
+                character.Role,
+                character.Difficulty,
+                character.Gender,
+                character.Biography,
+                character.BackStory,
+                character.ParentItem,
+                character.Dlc,
+                this.baseUrlAPI + character.IconFilePath,
+                this.baseUrlAPI + character.BackgroundImagePath
             );
-
-            this.characterMap.set(i, newCharacter);
+            // conversion de la string en number
+            this.characterMap.set(parseInt(i), newCharacter);
         }
     }
 
@@ -126,33 +127,33 @@ export class ApiService{
             let perk = response[i];
 
             // Description base on tunnable
-            let description = perk.description;
-            if (perk.tunables !== null){
-                for (let j in perk.tunables){
-                    if (perk.tunables[j].length == 1){
-                        description = description.replace("{" + j + "}", perk.tunables[j]);
-                    } else if (perk.tunables[j].length == 3){
-                        description = description.replace("{" + j + "}", perk.tunables[j][0] + "/" + perk.tunables[j][1] + "/" + perk.tunables[j][2]);
+            let description = perk.Description;
+/*             if (perk.Tunables !== null){
+                for (let j in perk.Tunables){
+                    if (perk.Tunables[j].length == 1){
+                        description = description.replace("{" + j + "}", perk.Tunables[j]);
+                    } else if (perk.Tunables[j].length == 3){
+                        description = description.replace("{" + j + "}", perk.Tunables[j][0] + "/" + perk.Tunables[j][1] + "/" + perk.Tunables[j][2]);
                     }
                 }
-            }
+            } */
             
             let newPerk = new Perk(
                 i,
-                perk.categories,
-                perk.name,
+                perk.Categories,
+                perk.Name,
                 description,
-                perk.role,
-                perk.character,
-                perk.teachable,
-                perk.image
+                perk.Role,
+                perk.Character,
+                perk.TeachableLevel,
+                this.baseUrlAPI + perk.IconFilePathList
             );
             this.perkMap.set(i, newPerk);
             
             //Add this perk to the character link if character not null
             // Otherwise, it's a global perk
-            if (perk.character !== null){
-                let character = this.characterMap.get(perk.character);
+            if (perk.Character !== null){
+                let character = this.characterMap.get(perk.Character);
                 if (character !== undefined){
                     character.addPerk(newPerk);
                 }
@@ -261,7 +262,7 @@ export class ApiService{
         return null;
     }
 
-    public getCharacterMap(): Map<string, Character> {
+    public getCharacterMap(): Map<number, Character> {
         return this.characterMap;
     }
 

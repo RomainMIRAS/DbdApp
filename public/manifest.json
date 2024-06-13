@@ -37,7 +37,8 @@
         "https://*.google-analytics.com",
         "http://*.google-analytics.com",
         "https://www.googleapis.com",
-        "https://dbd.tricky.lol"
+        "https://dbd.tricky.lol",
+        "https://dbd-info.com"
       ]
     },
     "force_browser": "user",
